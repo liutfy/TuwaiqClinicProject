@@ -34,12 +34,6 @@ namespace ClinicMVC.Models
                 .Property(x => x.CreatedAt)
                 .HasDefaultValueSql("GetDate()");
 
-            //modelBuilder.Entity<Appointment>()
-            //    .HasData(
-            //        new Appointment { id = 1, AppointmentDate = new DateTime(2025, 8, 1, 17, 0, 0), DoctorID = 1, Status = "Scheduled" },
-            //        new Appointment { id = 2, AppointmentDate = new DateTime(2025, 7, 25, 17, 0, 0), DoctorID = 1, Status = "Completed" },
-            //        new Appointment { id = 3, AppointmentDate = new DateTime(2025, 8, 5, 17, 0, 0), DoctorID = 1, Status = "Scheduled" }
-            //    );
 
             modelBuilder.Entity<AppUsers>(b => b.ToTable("Users"));
             modelBuilder.Entity<IdentityRole>(b => b.ToTable("Roles"));

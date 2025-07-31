@@ -4,6 +4,9 @@
 <h4>
     @Model.FullName
 </h4>
+<a asp-controller="Appointment" asp-route-patientId="@Model.id" asp-action="Create" class="btn btn-dark">
+    New Appointment
+</a>
 <p>
     <strong>Age:</strong> @Model.Age
 </p>
@@ -26,8 +29,8 @@
         {
             <tr>
                 <td>@p.id</td>
-               @*  <td>@p.AppointmentDate.ToString("dd-MMM-yyyy HH:mm")</td>
-                <td>@p.DoctorName</td> *@
+                <td>@p.AppointmentDate.ToString("yyyy-MM-dd HH:mm")</td>
+                <td>@p.DoctorName</td>
                 <td>@p.Status</td>
             </tr>
         }

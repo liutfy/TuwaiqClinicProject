@@ -27,7 +27,7 @@ namespace ClinicMVC.Models
                 NationalId = NationalId,
                 DateOfBirth = DateOfBirth,
                 Gender = Gender,
-                //Appointments = Appointments.Select(a => a.ToAppointmentVM()).ToList(),
+                Appointments = Appointments.Select(a => a.ToAppointmentVM()).ToList()
             };
         }
 

@@ -15,6 +15,6 @@ namespace ClinicMVC.ModelVM
         public DateTime DateOfBirth { get; set; }
         public String Gender { get; set; }
         public int Age => Convert.ToInt32((DateTime.Today - DateOfBirth).TotalDays / 365);
-        public List<Appointment> Appointments { get; set; } = new();
+        public List<AppointmentVM> Appointments { get; set; } = new();
     }
 }

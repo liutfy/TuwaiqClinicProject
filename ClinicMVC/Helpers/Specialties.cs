@@ -6,14 +6,15 @@ namespace ClinicMVC.Helpers
     public enum Specialties
     {
         Dermatology,
-
-        [Display(Name = "General Surgery")]
-        GeneralSurgery,
-
         Cardiology,
-
-        Neurology, 
-
-        Pathology
+        FamilyMedicine,
+        InternalMedicine,
+        Pediatrics,
+        Oncology,
+        Neurology,
+        Ophthalmology,
+        Radiology,
+        Rheumatology,
+        Endocrinology
     }
 }

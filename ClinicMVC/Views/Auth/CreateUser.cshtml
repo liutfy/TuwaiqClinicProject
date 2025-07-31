@@ -30,7 +30,7 @@
     }
     <div>
         <label asp-for="Role"></label>
-        <select class="form-select" asp-for="Role" asp-items="new SelectList(roles)">
+        <select class="form-select" asp-for="Role" asp-items="new SelectList(roles)" id="Role">
         </select>
         <span asp-validation-for="Role" class="text-danger"></span>
     </div>
@@ -46,21 +46,17 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script>
+        document.getElementById("Role").addEventListener("change", function () {
+            const role = this.value;
+            if (role === "Doctor") {
+                window.location.href = '@Url.Action("Create", "Doctor")';
+            } else if (role === "Receptionist") {
+                window.location.href = '@Url.Action("Index", "User")';
+            }
+        });
+    </script>
 }
 
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-    <script>
-        @if (TempData["SuccessMessage"] != null)
-        {
-                <text>
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Success!',
-                        text: '@TempData["SuccessMessage"]'
-                    });
-                </text>
-        }
-    </script>
 
 

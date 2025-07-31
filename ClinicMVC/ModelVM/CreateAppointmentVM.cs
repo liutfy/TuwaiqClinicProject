@@ -15,7 +15,7 @@ namespace ClinicMVC.ModelVM
         [Display(Name = "Doctor")]
         public int DoctorID { get; set; }
         public List<SelectListItem> Doctors { get; set; } = new();
-        public List<SelectListItem> Patients { get; set; } = new();
+   
         public Appointment toAppointment()
         {
             return new Appointment

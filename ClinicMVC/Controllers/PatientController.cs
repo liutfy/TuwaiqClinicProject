@@ -2,6 +2,7 @@
 using ClinicMVC.ModelVM;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace ClinicMVC.Controllers
 {
@@ -33,10 +34,10 @@ namespace ClinicMVC.Controllers
             {
 
                 var patient = context.Patients
-                                 //.Include(p => p.Appointments)
-                                 //.ThenInclude(a => a.Doctor)
-                                 .FirstOrDefault(p => p.id == id);
-                if (patient == null)
+                                     .Include(p => p.Appointments)
+                                     .ThenInclude(a => a.Doctor)
+                                     .FirstOrDefault(u => u.id == id);
+            if (patient == null)
                 {
                     return NotFound();
                 }

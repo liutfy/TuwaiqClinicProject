@@ -1,4 +1,9 @@
 ﻿@model DoctorFilterListVM
+@using Microsoft.AspNetCore.Identity
+
+@{
+    var isAdmin = User.IsInRole("Admin");
+}
 
 @{
     ViewData["Title"] = "Doctors";
@@ -8,9 +13,6 @@
     <h6 class="card-subtitle">
         # of Doctors @Model.data.Count
     </h6>
-    <a asp-controller="Doctor" asp-action="Create" class="btn btn-dark">
-        New Doctor
-    </a>
 </div>
 
 
@@ -43,12 +45,16 @@
                <a asp-controller="Doctor" asp-action="Details" asp-route-id="@d.id" class="btn btn-primary">
                         Details
               </a>
-               <a asp-controller="Doctor" asp-action="Update" asp-route-id="@d.id" class="btn btn-secondary">
+                    @if (User.IsInRole(AppRoles.Admin.ToString()))
+                {
+
+               <a asp-controller="Doctor" asp-action="Update" asp-route-id="@d.id" class="btn btn-secondary" >
                         update
                 </a>
                     <a href="javascript:;" data-id="@d.id" class="btn btn-danger js-delete">
                         Delete
                     </a>
+                }
             </td>
         </tr>
 

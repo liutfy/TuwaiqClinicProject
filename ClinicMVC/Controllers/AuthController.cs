@@ -1,4 +1,5 @@
-﻿using ClinicMVC.Models;
+﻿using ClinicMVC.Helpers;
+using ClinicMVC.Models;
 using ClinicMVC.ModelVM;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -21,9 +22,7 @@ namespace ClinicMVC.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            //var usersVM = context.Users.Select(d => d.ToUserVM(Users.Role))
-            //                        .ToList();
-            //return View(usersVM);
+       
             var users = context.Users.ToList();
             var usersVM = new List<UserVM>();
 
@@ -142,7 +141,29 @@ namespace ClinicMVC.Controllers
                 return View(model);
             }
 
+
+            if (model.Role == AppRoles.Doctor.ToString())
+            {
+                return RedirectToAction("Create", "Doctor");
+            }
+            else if (model.Role == AppRoles.Receptionist.ToString())
+            {
+                return RedirectToAction("Index", "User");
+            }
+
+            
             return RedirectToAction(nameof(CreateUser));
+        }
+        public IActionResult DeleteUser(String UserName)
+        {
+            var User = context.Users.FirstOrDefault(d => d.Email == UserName);
+            if (User == null)
+            {
+                return NotFound();
+            }
+            context.Users.Remove(User);
+            context.SaveChanges();
+            return Ok();
         }
     }
 }

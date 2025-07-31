@@ -16,7 +16,7 @@ namespace ClinicMVC.ModelVM
         public string RawStatus { get; set; } = null!;
         public string Status =>
             RawStatus == Statuses.Scheduled.ToString() && AppointmentDate < DateTime.Now
-            ? "No Show" : RawStatus;
+            ? "Cancelled" : RawStatus;
 
     }
 }

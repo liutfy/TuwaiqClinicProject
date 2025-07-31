@@ -7,79 +7,70 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ClinicMVC.Controllers
 {
+    [Authorize]
     public class AppointmentController : Controller
     {
 
-            public ClinicContext context;
+        public ClinicContext context;
 
-            public AppointmentController(ClinicContext context)
-            {
-                this.context = context;
+        public AppointmentController(ClinicContext context)
+        {
+            this.context = context;
 
-            }
+        }
 
 
-            public IActionResult Index()
-            {
+        public IActionResult Index()
+        {
 
             var appointmentVMs = context.Appointments
-            .Include(a => a.Doctor)
-            .Include(a => a.Patient)
-            .Select(a => new AppointmentVM
-            {
-                id = a.id,
-                DoctorName = a.Doctor.name,
-                PatientName = a.Patient.FullName,
-                AppointmentDate = a.AppointmentDate,
-                RawStatus = a.Status
-            })
-            .OrderByDescending(a => a.AppointmentDate)
-            .ToList();
+                               .Include(a => a.Doctor)
+                               .Include(a => a.Patient)
+                               .ToList()
+                               .Select(a => a.ToAppointmentVM())
+                               .OrderByDescending(a => a.AppointmentDate)
+                               .ToList();
 
             return View(appointmentVMs);
         }
 
-            //public IActionResult Details(int id)
-            //{
+        public IActionResult Details(int id)
+        {
 
-            //    var Appointments = context.Appointments
-            //                     //.Include(p => p.Appointments)
-            //                     //.ThenInclude(a => a.Doctor)
-            //                     .FirstOrDefault(p => p.id == id);
-            //    if (patient == null)
-            //    {
-            //        return NotFound();
-            //    }
-
-            //    var vm = patient.ToPatientVM();
-            //    return View(vm);
-            //}
-
-
-            public IActionResult Create()
+            var Appointment = context.Appointments
+                                .Include(a => a.Doctor)
+                                .Include(a => a.Patient)
+                                .FirstOrDefault(p => p.id == id);
+            if (Appointment == null)
             {
+                return NotFound();
+            }
+
+            var vm = Appointment.ToAppointmentVM();
+            return View(vm);
+        }
+
+
+        public IActionResult Create(int PatientID)
+        {
             var vm = new CreateAppointmentVM
             {
+                PatientID = PatientID,
                 Doctors = context.Doctors.Select(d => new SelectListItem
                 {
                     Value = d.id.ToString(),
                     Text = d.name
                 }).ToList(),
 
-                Patients = context.Patients.Select(p => new SelectListItem
-                {
-                    Value = p.id.ToString(),
-                    Text = p.FullName
-                }).ToList()
             };
 
             return View(vm);
         }
 
-            [HttpPost]
-            [ValidateAntiForgeryToken]
-            public IActionResult Create(CreateAppointmentVM newAppointment)
-            {
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Create(CreateAppointmentVM newAppointment)
+        {
 
             if (!ModelState.IsValid)
             {
@@ -89,11 +80,6 @@ namespace ClinicMVC.Controllers
                     Text = d.name
                 }).ToList();
 
-                newAppointment.Patients = context.Patients.Select(p => new SelectListItem
-                {
-                    Value = p.id.ToString(),
-                    Text = p.FullName
-                }).ToList();
 
                 return View(newAppointment);
             }
@@ -102,54 +88,22 @@ namespace ClinicMVC.Controllers
             context.Appointments.Add(appointment);
             context.SaveChanges();
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Details", "Patient", new { id = newAppointment.PatientID });
+        }
+
+
+        public IActionResult Delete(int id)
+        {
+            var Appointment = context.Appointments.FirstOrDefault(p => p.id == id);
+            if (Appointment == null)
+            {
+                return NotFound();
+            }
+
+            context.Appointments.Remove(Appointment);
+            context.SaveChanges();
+            return Ok();
         }
     }
-
-            //public IActionResult Update(int id)
-            //{
-            //    var patient = context.Patients.FirstOrDefault(p => p.id == id);
-            //    if (patient == null)
-            //    {
-            //        return NotFound();
-            //    }
-
-            //    var vm = patient.ToPatientUpdateVM();
-            //    return View(vm);
-            //}
-
-            //[HttpPost]
-            //[ValidateAntiForgeryToken]
-            //public IActionResult Update(int id, UpdatePatientVM updatedPatient)
-            //{
-
-            //    if (!ModelState.IsValid)
-            //    {
-            //        return View(updatedPatient);
-            //    }
-
-            //    var existingPatient = context.Patients.FirstOrDefault(p => p.id == id);
-            //    if (existingPatient == null)
-            //    {
-            //        return NotFound();
-            //    }
-
-            //    updatedPatient.ToPatient(existingPatient);
-            //    context.SaveChanges();
-            //    return RedirectToAction(nameof(Index));
-            //}
-
-            //public IActionResult Delete(int id)
-            //{
-            //    var patient = context.Patients.FirstOrDefault(p => p.id == id);
-            //    if (patient == null)
-            //    {
-            //        return NotFound();
-            //    }
-
-            //    context.Patients.Remove(patient);
-            //    context.SaveChanges();
-            //    return Ok();
-            //}
-        }
+}
     

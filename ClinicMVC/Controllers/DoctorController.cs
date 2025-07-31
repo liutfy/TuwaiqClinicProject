@@ -41,9 +41,9 @@ namespace ClinicMVC.Controllers
 
         public IActionResult Details(int id)
         {
-            //var doctor = context.Doctors.FirstOrDefault(p => p.id == id);
             var doctor = context.Doctors
-            .Include(d => d.Appointments) 
+            .Include(d => d.Appointments)
+            .ThenInclude(a => a.Patient)
             .FirstOrDefault(p => p.id == id);
 
             if (doctor == null)

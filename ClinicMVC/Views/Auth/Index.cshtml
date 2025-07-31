@@ -78,13 +78,13 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
-                        url: '/Doctor/Delete/' + id,
+                        url: '/Auth/DeleteUser?userName=' + encodeURIComponent(id),
                         type: 'GET',
                         success: function () {
                             btn.parents("tr").remove();
                         },
                         error: function () {
-                            Swal.fire("Error!", "Could not delete the doctor.", "error");
+                            Swal.fire("Error!", "Could not delete the User.", "error");
                         }
                     });
                 }
