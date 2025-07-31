@@ -124,7 +124,7 @@ namespace ClinicMVC.Controllers
 
             if (!result.Succeeded)
             {
-                TempData["SuccessMessage"] = "User has been created successfully!";
+                
                 foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
@@ -136,7 +136,7 @@ namespace ClinicMVC.Controllers
             result = await userManager.AddToRoleAsync(user, model.Role);
             if (!result.Succeeded)
             {
-                TempData["SuccessMessage"] = "User has been created successfully!";
+               
                 ModelState.AddModelError(string.Empty, "failed to add role!!");
                 return View(model);
             }
@@ -146,13 +146,10 @@ namespace ClinicMVC.Controllers
             {
                 return RedirectToAction("Create", "Doctor");
             }
-            else if (model.Role == AppRoles.Receptionist.ToString())
-            {
-                return RedirectToAction("Index", "User");
-            }
+           
 
             
-            return RedirectToAction(nameof(CreateUser));
+            return RedirectToAction(nameof(Index));
         }
         public IActionResult DeleteUser(String UserName)
         {
