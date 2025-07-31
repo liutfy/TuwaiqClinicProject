@@ -1,0 +1,21 @@
+﻿@model DoctorFilterVM
+
+<div class="">
+    <form class="row row-cols-lg-auto g-3 align-items-center">
+        <div class="col-12">
+            <input class="form-control" type="text" asp-for="id" placeholder="Filter by Id" aria-label="Filter by Id">
+        </div>
+        <div class="col-12">
+            <input class="form-control" asp-for="name" placeholder="Filter by Full Name" aria-label="Filter by Name">
+        </div>
+        <div class="col-12">
+            <input class="form-control" asp-for="Speciality" placeholder="Filter by Speciality" aria-label="Filter by Speciality">
+        </div>
+        <div class="col-12">
+            <button type="submit" class="btn btn-outline-secondary">Search</button>
+        </div>
+    </form>
+    <p>
+        Current Filter: @Model.name
+    </p>
+</div>

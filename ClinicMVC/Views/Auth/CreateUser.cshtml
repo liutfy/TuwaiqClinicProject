@@ -1,0 +1,66 @@
+﻿@model CreateUserVM
+
+@{
+    ViewData["Title"] = "Create User";
+}
+
+<h4 class="card-title">
+    Create User
+</h4>
+<form method="post" enctype="multipart/form-data">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    
+    <div>
+        <label asp-for="Email"></label>
+        <input asp-for="Email" class="form-control" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+    <div>
+        <label asp-for="Password"></label>
+        <input asp-for="Password" class="form-control" />
+        <span asp-validation-for="Password" class="text-danger"></span>
+    </div>
+    <div>
+        <label asp-for="ConfirmedPassword"></label>
+        <input asp-for="ConfirmedPassword" class="form-control" />
+        <span asp-validation-for="ConfirmedPassword" class="text-danger"></span>
+    </div>
+    @{
+        var roles = Enum.GetNames(typeof(AppRoles)).Where(r => r != "Admin");
+    }
+    <div>
+        <label asp-for="Role"></label>
+        <select class="form-select" asp-for="Role" asp-items="new SelectList(roles)">
+        </select>
+        <span asp-validation-for="Role" class="text-danger"></span>
+    </div>
+    <div>
+        <label asp-for="ProfilePicture"></label>
+        <input asp-for="ProfilePicture" class="form-control" />
+        <span asp-validation-for="ProfilePicture" class="text-danger"></span>
+    </div>
+    <div class="pt-2">
+        <input type="submit" value="Create" class="btn btn-primary" />
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        @if (TempData["SuccessMessage"] != null)
+        {
+                <text>
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success!',
+                        text: '@TempData["SuccessMessage"]'
+                    });
+                </text>
+        }
+    </script>
+
+

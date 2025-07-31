@@ -1,0 +1,97 @@
+﻿@model List<UserVM>
+
+@{
+    ViewData["Title"] = "Users";
+}
+
+<div class="d-flex justify-content-between">
+    <h6 class="card-subtitle">
+        # of Users @Model.Count
+    </h6>
+    <a asp-controller="Auth" asp-action="CreateUser" class="btn btn-dark">
+        New User
+    </a>
+</div>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Photo</th>
+            <th scope="col">Email</th>
+            <th scope="col">Role</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var d in Model)
+        {
+            <tr>
+                <td>
+                    @if (!string.IsNullOrEmpty(d.ImageBase64))
+                    {
+                        <img src="@d.ImageBase64" alt="Profile Picture" width="50" height="50" style="object-fit: cover; border-radius: 50%;" />
+                    }
+                    else
+                    {
+                        <span>No Image</span>
+                    }
+                </td>
+                <td>
+                    @d.Email
+                </td>
+                <td>
+                    @d.Role
+                </td>
+
+                <td>
+                    @* <a asp-controller="Doctor" asp-action="Details" asp-route-id="@d.Email" class="btn btn-primary">
+                        Details
+                    </a>
+                    <a asp-controller="Doctor" asp-action="Update" asp-route-id="@d.Role" class="btn btn-secondary">
+                        update
+                    </a> *@
+                    <a href="javascript:;" data-id="@d.Email" class="btn btn-danger js-delete">
+                        Delete
+                    </a>
+                </td>
+            </tr>
+
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+    <script>
+                $(".js-delete").on("click", function () {
+            var btn = $(this);
+            var id = btn.data("id");
+
+            Swal.fire({
+                title: "Are you sure?",
+                text: "This action cannot be undone.",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#d33",
+                cancelButtonColor: "#3085d6",
+                confirmButtonText: "Yes, delete it!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '/Doctor/Delete/' + id,
+                        type: 'GET',
+                        success: function () {
+                            btn.parents("tr").remove();
+                        },
+                        error: function () {
+                            Swal.fire("Error!", "Could not delete the doctor.", "error");
+                        }
+                    });
+                }
+            });
+        });
+
+    </script>
+}
+
+

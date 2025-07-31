@@ -1,0 +1,33 @@
+﻿
+@model DoctorVM
+
+<p>
+    Name: @Model.name
+</p>
+<p>
+    Speciality: @Model.Speciality
+</p>
+
+<p>
+    Total Appointments: @Model.Appointments.Count
+</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Appointment Date</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var a in Model.Appointments)
+        {
+            <tr>
+                <td>@a.id</td>
+                <td>@a.AppointmentDate.ToString("yyyy-MM-dd HH:mm")</td>
+                <td>@a.Status</td>
+            </tr>
+        }
+    </tbody>
+</table>

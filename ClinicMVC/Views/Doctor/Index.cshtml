@@ -1,0 +1,92 @@
+﻿@model DoctorFilterListVM
+
+@{
+    ViewData["Title"] = "Doctors";
+}
+
+<div class="d-flex justify-content-between">
+    <h6 class="card-subtitle">
+        # of Doctors @Model.data.Count
+    </h6>
+    <a asp-controller="Doctor" asp-action="Create" class="btn btn-dark">
+        New Doctor
+    </a>
+</div>
+
+
+<partial name="_Index" model="@Model.filter" /> 
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">name</th>
+            <th scope="col">Speciality</th>
+
+        </tr>
+    </thead>
+    <tbody>
+       @foreach (var d in Model.data)
+        {
+        <tr>
+            <td>
+                @d.id
+            </td>
+            <td>
+                    @d.name
+            </td>
+            <td>
+                    @d.Speciality
+            </td>
+            <td>
+               <a asp-controller="Doctor" asp-action="Details" asp-route-id="@d.id" class="btn btn-primary">
+                        Details
+              </a>
+               <a asp-controller="Doctor" asp-action="Update" asp-route-id="@d.id" class="btn btn-secondary">
+                        update
+                </a>
+                    <a href="javascript:;" data-id="@d.id" class="btn btn-danger js-delete">
+                        Delete
+                    </a>
+            </td>
+        </tr>
+
+    }
+    </tbody>
+</table>
+
+@section Scripts {
+    <script>
+                $(".js-delete").on("click", function () {
+            var btn = $(this);
+            var id = btn.data("id");
+
+            Swal.fire({
+                title: "Are you sure?",
+                text: "This action cannot be undone.",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#d33",
+                cancelButtonColor: "#3085d6",
+                confirmButtonText: "Yes, delete it!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '/Doctor/Delete/' + id,
+                        type: 'GET',
+                        success: function () {
+                            btn.parents("tr").remove();
+                        },
+                        error: function () {
+                            Swal.fire("Error!", "Could not delete the doctor.", "error");
+                        }
+                    });
+                }
+            });
+        });
+
+    </script>
+    }
+    
+  

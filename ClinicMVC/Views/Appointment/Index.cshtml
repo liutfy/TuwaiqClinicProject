@@ -1,0 +1,41 @@
+﻿@model List<AppointmentVM>
+
+@{
+    ViewData["Title"] = "Appointments";
+}
+<h2>Appointments</h2>
+
+<div class="d-flex justify-content-between">
+    <h6 class="card-subtitle">
+        # of Appointments @Model.Count
+    </h6>
+    <a asp-controller="Appointment" asp-action="Create" class="btn btn-dark">
+        New Appointment
+    </a>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Patient</th>
+            <th>Doctor</th>
+            <th>Date & Time</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var a in Model)
+        {
+            <tr>
+                <td>@a.PatientName</td>
+                <td>@a.DoctorName</td>
+                <td>@a.AppointmentDate.ToString("f")</td>
+                <td>
+                    <span class="badge @(a.Status == "Scheduled" ? "bg-info" : a.Status == "Completed" ? "bg-success" : "bg-danger")">
+                        @a.Status
+                    </span>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

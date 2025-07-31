@@ -1,0 +1,32 @@
+﻿@model UpdateDoctorVM
+
+<form method="post">
+    <h4 class="card-title">
+        Update Doctor #@Model.id
+    </h4>
+    <div>
+        <label asp-for="name"></label>
+        <input asp-for="name" class="form-control" />
+        <span asp-validation-for="name" class="text-danger"></span>
+
+    </div>
+     <div>
+        <label asp-for="Speciality"></label>
+        <select class="form-select" asp-for="Speciality" asp-items="new SelectList(Enum.GetNames<Specialties>())">
+        </select>
+        <span asp-validation-for="Speciality" class="text-danger"></span>
+    </div>
+    @* <div>
+        <label asp-for="Speciality"></label>
+        <input asp-for="Speciality" class="form-control" />
+        <span asp-validation-for="Speciality" class="text-danger"></span>
+
+    </div> *@
+    <div>
+        <br />
+        <input type="submit" value="Update" class="btn btn-primary" />
+    </div>
+</form>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
